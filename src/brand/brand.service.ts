@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
@@ -10,9 +14,17 @@ export class BrandService {
 
   async create(data: CreateBrandDto): Promise<Brand> {
     try {
+      const brand = await this.prisma.brand.findFirst({
+        where: {
+          name: {
+            contains: CreateBrandDto.name,
+          },
+        },
+      });
+      if (brand) throw new BadRequestException('Brand name already exists');
       return await this.prisma.brand.create({ data });
     } catch (error) {
-      throw new Error('Failed to create brand: ' + error.message);
+      throw new Error('Failed to create brand: ' + error);
     }
   }
 
