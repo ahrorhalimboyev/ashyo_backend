@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { User_address } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUser_addressDto } from './dto/create-user_address.dto';
-import { User_address } from '@prisma/client';
 import { UpdateUser_addressDto } from './dto/update-user_address.dto';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class User_addressService {
   }
 
   async findAll(): Promise<User_address[]> {
-    return this.prisma.user_address.findMany({});
+    return this.prisma.user_address.findMany();
   }
 
   async findOne(id: number): Promise<User_address | null> {
