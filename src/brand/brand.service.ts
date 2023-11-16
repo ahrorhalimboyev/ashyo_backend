@@ -31,7 +31,8 @@ export class BrandService {
   async findAll(): Promise<Brand[]> {
     try {
       return await this.prisma.brand.findMany({
-        include: { categories: true },
+        include: { product_model: true,categories:true,products:true },
+
       });
     } catch (error) {
       throw new Error('Failed to fetch brands: ' + error.message);
@@ -42,7 +43,7 @@ export class BrandService {
     try {
       return await this.prisma.brand.findUnique({
         where: { id },
-        include: { categories: true },
+        include: { categories: true, product_model: true, products: true },
       });
     } catch (error) {
       throw new NotFoundException(`Brand with ID ${id} not found`);
